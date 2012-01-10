@@ -1,5 +1,3 @@
-require 'betamax/test_helpers'
-
 module Betamax  
   class << self
     attr_accessor :commands
@@ -7,6 +5,8 @@ module Betamax
   
   self.commands = nil
 end
+
+require 'betamax/test_helpers'
 
 def `(cmd)
   cset = Betamax.commands.shift

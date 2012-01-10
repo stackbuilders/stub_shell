@@ -11,8 +11,6 @@ Gem::Specification.new do |s|
   s.summary     = %q{Stub results of shell commands for test purposes}
   s.description = %q{Stubs a set of shell commands and their return values using the backquote operator.}
 
-  s.rubyforge_project = "betamax"
-
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- spec/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
