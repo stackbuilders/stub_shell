@@ -39,7 +39,9 @@ describe Betamax do
 
     it "should raise an error when there are no commands defined in the script" do
       lambda {
-        betamax [] { `foobar` }
+        betamax [] do
+          `foobar`
+        end
       }.should raise_exception("You tried to invoke 'foobar' but there are no commands defined in Betamax")
     end
   end
