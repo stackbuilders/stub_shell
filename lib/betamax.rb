@@ -12,7 +12,8 @@ def `(cmd)
   cset = Betamax.commands.shift
 
   if cmd == cset[0]
-    super("#{File.join(File.dirname(__FILE__), '..', 'bin', 'fake_process.sh')} '#{cset[1][0]}' '#{cset[1][1]}'")
+    super("#{File.join(File.dirname(__FILE__), '..', 'bin', 'fake_process.sh')} '#{cset[1][1]}'")
+    cset[1][0]
   else
     raise "You're not following the script!"
   end
