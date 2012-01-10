@@ -22,7 +22,7 @@ describe Betamax do
         lambda { `foo` }.should raise_exception
       end
     end
-    
+
     it "should raise an error if all commands are not invoked" do
       lambda {
         betamax [['foo', ['my output', 100]], ['bar', ['hey there', 55]]] do
