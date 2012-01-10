@@ -1,7 +1,5 @@
 # Betamax [![Build Status](https://secure.travis-ci.org/stackbuilders/betamax.png)](http://travis-ci.org/stackbuilders/betamax)
 
-## Overview
-
 ## Installation
 
     gem install betamax
