@@ -30,5 +30,17 @@ describe Betamax do
         end
       }.should raise_exception
     end
+
+    it "should provide a helpful message when a command is invoked outside of a betamax block" do
+      lambda {
+        `foobar`
+      }.should raise_exception("Tried to invoke 'foobar' when Betamax was not configured")
+    end
+
+    it "should raise an error when there are no commands defined in the script" do
+      lambda {
+        betamax [] { `foobar` }
+      }.should raise_exception("You tried to invoke 'foobar' but there are no commands defined in Betamax")
+    end
   end
 end

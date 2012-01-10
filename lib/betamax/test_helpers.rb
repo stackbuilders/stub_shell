@@ -5,6 +5,7 @@ module Betamax::TestHelpers
     yield block
 
     raise "You didn't call these commands within the block: #{Betamax.commands.map(&:first).join(', ')}" unless Betamax.commands.empty?
+  ensure
     Betamax.commands = nil
   end
 end

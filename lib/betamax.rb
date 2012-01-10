@@ -9,6 +9,9 @@ end
 require 'betamax/test_helpers'
 
 def `(cmd)
+  raise "Tried to invoke '#{cmd}' when Betamax was not configured" if Betamax.commands.nil?
+  raise "You tried to invoke '#{cmd}' but there are no commands defined in Betamax" if Betamax.commands.empty?
+
   cset = Betamax.commands.shift
 
   if cmd == cset[0]
