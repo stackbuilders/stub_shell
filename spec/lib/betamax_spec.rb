@@ -45,4 +45,12 @@ describe Betamax do
       }.should raise_exception("You tried to invoke 'foobar' but there are no commands defined in Betamax")
     end
   end
+  
+  describe "stubbing commands run with system" do
+    it "should return the stubbed values" do
+      betamax [['foo', ['my output', 0]]] do
+        system("foo").should be_true
+      end
+    end
+  end
 end

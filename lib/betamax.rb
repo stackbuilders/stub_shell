@@ -3,21 +3,20 @@ module Betamax
     attr_accessor :commands
   end
   
+  def self.call_shell_command(cmd, shell_command, return_stdout)  
+  end
+
   self.commands = nil
 end
 
 require 'betamax/test_helpers'
+require 'betamax/command'
 
 def `(cmd)
-  raise "Tried to invoke '#{cmd}' when Betamax was not configured" if Betamax.commands.nil?
-  raise "You tried to invoke '#{cmd}' but there are no commands defined in Betamax" if Betamax.commands.empty?
-
-  cset = Betamax.commands.shift
-
-  if cmd == cset[0]
-    super("#{File.join(File.dirname(__FILE__), '..', 'bin', 'fake_process.sh')} '#{cset[1][1]}'")
-    cset[1][0]
-  else
-    raise "You're not following the script!"
-  end
+  Betamax::Command.new(cmd, :`, true).execute
 end
+
+def system(cmd)
+  Betamax::Command.new(cmd, :system, false).execute
+end
+
