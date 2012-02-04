@@ -81,6 +81,18 @@ describe StubShell do
     end
   end
   
+  describe "with Kernel#system" do
+    it "should return true if the command succeeds (ie., has an exitstatus of 0)" do
+      stub_shell { command('ls /tmp/stuff') { exitstatus 0 } }
+      system('ls /tmp/stuff').should be_true
+    end
+    
+    it "should return true if the command succeeds (ie., has a non-zero exit status)" do
+      stub_shell { command('ls /tmp/stuff') { exitstatus 1 } }
+      system('ls /tmp/stuff').should be_false
+    end
+  end
+  
   describe "with a command having a regular expression" do
     it "should match a command matching the regular expression" do
       stub_shell do
