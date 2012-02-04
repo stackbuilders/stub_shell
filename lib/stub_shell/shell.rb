@@ -1,5 +1,5 @@
 module StubShell
-  class ShellContext
+  class Shell
     attr_reader :parent_context
 
     def initialize parent_context = nil, &block

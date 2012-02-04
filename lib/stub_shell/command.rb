@@ -10,13 +10,13 @@ module StubShell
       instance_eval &block
     end
 
-    def shell_context &block
-      raise ArgumentError, "shell_context has already been defined for #{self}" if @shell_context
-      @shell_context = ShellContext.new(self.context, &block)
+    def stub_shell &block
+      raise ArgumentError, "stub_shell has already been defined for #{self}" if @stub_shell
+      @stub_shell = Shell.new(self.context, &block)
     end
 
     def current_context
-      @shell_context
+      @stub_shell
     end
 
     def stdout output

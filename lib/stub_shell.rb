@@ -8,7 +8,7 @@ end
 
 require 'stub_shell/result'
 require 'stub_shell/command'
-require 'stub_shell/shell_context'
+require 'stub_shell/shell'
 require 'stub_shell/test_helpers'
 
 def `(cmd)
