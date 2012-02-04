@@ -26,7 +26,7 @@ module StubShell
     # find definition of command. An Exception is raised if no implementation of command
     # is found.
     def resolve command_string
-      if detected_command = @commands.detect{|cmd| cmd.name == command_string }
+      if detected_command = @commands.detect{|cmd| cmd.matches? command_string }
         detected_command
       elsif parent_context
         parent_context.resolve(command_string)

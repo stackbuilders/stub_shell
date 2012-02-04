@@ -80,4 +80,16 @@ describe StubShell do
       `ls /tmp/myfile`.should == 'yes, your file exists'
     end
   end
+  
+  describe "with a command having a regular expression" do
+    it "should match a command matching the regular expression" do
+      stub_shell do
+        command /ls .*/ do
+          stdout 'yes, your file exists'
+        end
+      end
+      
+      `ls /tmp/heythere`.should == 'yes, your file exists'
+    end
+  end
 end

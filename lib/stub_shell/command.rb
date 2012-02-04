@@ -1,9 +1,9 @@
 module StubShell
   class Command  
-    attr_reader :context, :name, :result
+    attr_reader :context, :result, :match
 
-    def initialize name, context, &block
-      @name    = name
+    def initialize match, context, &block
+      @match    = match
       @context = context
       @result  = Result.new
 
@@ -15,6 +15,15 @@ module StubShell
       @stub_shell = Shell.new(self.context, &block)
     end
 
+    def matches? input_string
+      case match
+      when String
+        input_string == match
+      when Regexp
+        !!(match.match input_string)
+      end
+    end
+    
     def current_context
       @stub_shell
     end
