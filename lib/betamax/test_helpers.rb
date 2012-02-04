@@ -1,11 +1,5 @@
 module Betamax::TestHelpers
-  def betamax script, &block
-    Betamax.commands = script
-
-    yield block
-
-    raise "You didn't call these commands within the block: #{Betamax.commands.map(&:first).join(', ')}" unless Betamax.commands.empty?
-  ensure
-    Betamax.commands = nil
+  def shell_context &block
+    Betamax.current_context = Betamax::ShellContext.new &block
   end
 end

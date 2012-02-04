@@ -1,48 +1,83 @@
 require 'spec_helper'
 
 describe Betamax do
-  describe "stubbing commands in the correct order" do
-    it "should return the correct string and exit code with one command" do
-      betamax [['foo', ['my output', 127]]] do
-        `foo`.should == 'my output'
-        $?.exitstatus.should == 127
-      end
-    end
-
-    it "should return the correct string and exit code with two commands" do
-      betamax [['foo', ['my output', 125]], ['bar', ['second output', 127]]] do
-        `foo`
-        `bar`.should == 'second output'
-        $?.exitstatus.should == 127
-      end
-    end
-
-    it "should raise an exception when the script is not followed" do
-      betamax [['bar', ['my output', 100]]] do
-        lambda { `foo` }.should raise_exception
-      end
-    end
-
-    it "should raise an error if all commands are not invoked" do
-      lambda {
-        betamax [['foo', ['my output', 100]], ['bar', ['hey there', 55]]] do
-          `foo`
+  describe "stubbing a command with backquote" do
+    it "should set the correct value for STDOUT" do
+      shell_context do
+        command "ls /tmp/foobar" do
+          stdout "hey there"
         end
-      }.should raise_exception
+      end
+      
+      `ls /tmp/foobar`.should == 'hey there'
     end
-
-    it "should provide a helpful message when a command is invoked outside of a betamax block" do
-      lambda {
-        `foobar`
-      }.should raise_exception("Tried to invoke 'foobar' when Betamax was not configured")
-    end
-
-    it "should raise an error when there are no commands defined in the script" do
-      lambda {
-        betamax [] do
-          `foobar`
+    
+    it "should have an exitstatus of 0 by default" do      
+      shell_context do
+        command "ls /tmp/foobar" do
+          stdout "hey there"
         end
-      }.should raise_exception("You tried to invoke 'foobar' but there are no commands defined in Betamax")
+      end
+      
+      `ls /tmp/foobar`
+      $?.exitstatus.should == 0
+    end
+    
+    it "should allow the user to set a non-zero exit status" do
+      shell_context do
+        command "ls /tmp/foobar" do
+          stdout "hey there"
+          exitstatus 1
+        end
+      end
+      
+      `ls /tmp/foobar`
+      $?.exitstatus.should == 1
+    end
+  end  
+  
+  describe "using a shell context after the shell state has been mutated" do
+    it "should use the return value from the nested context" do
+      shell_context do
+        command 'ls /tmp/foobar' do
+          stdout 'yes, foobar exists'
+        end
+
+        command "rm /tmp/foobar" do
+          stderr 1
+
+          shell_context do
+            command 'ls /tmp/foobar' do
+              stdout 'the file no longer exists'
+            end
+          end
+        end
+      end
+
+      `ls /tmp/foobar`.should == 'yes, foobar exists'
+      `rm /tmp/foobar`
+      `ls /tmp/foobar`.should == 'the file no longer exists'
+    end
+    
+    it "should find commands defined in a more general context even when some state has been mutated" do
+      shell_context do
+        command 'ls /tmp/myfile' do
+          stdout 'yes, your file exists'
+        end
+
+        command "rm /tmp/foobar" do
+          stderr 1
+
+          shell_context do
+            command 'ls /tmp/foobar' do
+              stdout 'the file no longer exists'
+            end
+          end
+        end
+      end
+
+      `rm /tmp/foobar`
+      `ls /tmp/myfile`.should == 'yes, your file exists'
     end
   end
 end

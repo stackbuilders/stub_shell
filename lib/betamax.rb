@@ -1,23 +1,18 @@
 module Betamax  
   class << self
-    attr_accessor :commands
+    attr_accessor :current_context
   end
   
-  self.commands = nil
+  self.current_context = nil
 end
 
+require 'betamax/result'
+require 'betamax/command'
+require 'betamax/shell_context'
 require 'betamax/test_helpers'
 
 def `(cmd)
-  raise "Tried to invoke '#{cmd}' when Betamax was not configured" if Betamax.commands.nil?
-  raise "You tried to invoke '#{cmd}' but there are no commands defined in Betamax" if Betamax.commands.empty?
-
-  cset = Betamax.commands.shift
-
-  if cmd == cset[0]
-    super("#{File.join(File.dirname(__FILE__), '..', 'bin', 'fake_process.sh')} '#{cset[1][1]}'")
-    cset[1][0]
-  else
-    raise "You're not following the script!"
-  end
+  command, Betamax.current_context = Betamax.current_context.execute(cmd)
+  super("#{File.join(File.dirname(__FILE__), '..', 'bin', 'fake_process.sh')} '#{command.result.exitstatus}'")
+  command.result.stdout
 end
