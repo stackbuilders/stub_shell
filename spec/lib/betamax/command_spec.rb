@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Betamax do
+describe Betamax::Command do
   describe "stubbing commands in the correct order" do
     it "should return the correct string and exit code with one command" do
       betamax [['foo', ['my output', 127]]] do

@@ -2,16 +2,19 @@ module Betamax
   class Command
     FAKE_PROCESS_SCRIPT = File.join(File.dirname(__FILE__), '..', '..', 'bin', 'fake_process.sh')
     
-    def initialize(cmd, shell_command, return_stdout)
+    attr_reader :script
+    
+    def initialize(cmd, shell_command, return_stdout, script)
       @cmd           = cmd
       @shell_command = shell_command
       @return_stdout = return_stdout
+      @script        = script.clone
     end
     
     def execute
       verify_valid_arguments!
       
-      command = cast_arguments! Betamax.commands      
+      command = cast_arguments!      
       verify_valid_command! command.cmd      
       result = invoke_kernel_command! command
                           
@@ -30,13 +33,14 @@ module Betamax
     end
     
     def verify_valid_command!(current_command)
+      puts 50.times{print "/"}, current_command, @cmd
       raise "You're not following the script!" unless @cmd == current_command
     end
     
     CommandValues = Struct.new(:cmd, :stdout, :retval)
     
-    def cast_arguments!(commands)
-      cset = commands.shift
+    def cast_arguments!
+      cset = @script.shift
       CommandValues.new(cset[0], cset[1][0], cset[1][1])
     end
   end
