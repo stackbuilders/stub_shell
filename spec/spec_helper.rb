@@ -3,8 +3,8 @@ require 'bundler/setup'
 require 'simplecov'
 SimpleCov.start
 
-require 'betamax'
+require 'stub_shell'
 
 RSpec.configure do |config|
-  config.include Betamax::TestHelpers
+  config.include StubShell::TestHelpers
 end

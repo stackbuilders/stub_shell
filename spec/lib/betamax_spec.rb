@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Betamax do
+describe StubShell do
   describe "stubbing a command with backquote" do
     it "should set the correct value for STDOUT" do
       shell_context do

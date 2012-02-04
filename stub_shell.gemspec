@@ -1,13 +1,13 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "betamax/version"
+require "stub_shell/version"
 
 Gem::Specification.new do |s|
-  s.name        = "betamax"
-  s.version     = Betamax::VERSION
+  s.name        = "stub_shell"
+  s.version     = StubShell::VERSION
   s.authors     = ["Justin Leitgeb", "itsmeduncan"]
   s.email       = ["justin@stackbuilders.com", "itsmeduncan@gmail.com"]
-  s.homepage    = "http://github.com/stackbuilders/betamax"
+  s.homepage    = "http://github.com/stackbuilders/stub_shell"
   s.summary     = %q{Stub results of shell commands for test purposes}
   s.description = %q{Stubs a set of shell commands and their return values using the backquote operator.}
 

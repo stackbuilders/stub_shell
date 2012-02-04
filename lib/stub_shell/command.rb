@@ -1,4 +1,4 @@
-module Betamax
+module StubShell
   class Command  
     attr_reader :context, :name, :result
 

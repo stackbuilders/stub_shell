@@ -1,4 +1,4 @@
-module Betamax
+module StubShell
   class ShellContext
     attr_reader :parent_context
 

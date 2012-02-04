@@ -1,4 +1,4 @@
-module Betamax  
+module StubShell  
   class << self
     attr_accessor :current_context
   end
@@ -6,13 +6,13 @@ module Betamax
   self.current_context = nil
 end
 
-require 'betamax/result'
-require 'betamax/command'
-require 'betamax/shell_context'
-require 'betamax/test_helpers'
+require 'stub_shell/result'
+require 'stub_shell/command'
+require 'stub_shell/shell_context'
+require 'stub_shell/test_helpers'
 
 def `(cmd)
-  command, Betamax.current_context = Betamax.current_context.execute(cmd)
+  command, StubShell.current_context = StubShell.current_context.execute(cmd)
   super("#{File.join(File.dirname(__FILE__), '..', 'bin', 'fake_process.sh')} '#{command.result.exitstatus}'")
   command.result.stdout
 end

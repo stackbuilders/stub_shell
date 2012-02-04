@@ -1,4 +1,4 @@
-module Betamax
+module StubShell
   class Result
     attr_accessor :stdout, :stderr, :exitstatus
 
