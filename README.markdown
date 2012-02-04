@@ -15,9 +15,10 @@
 ## Usage
 
     it ... do
-      stub_shell [['foo', ['my output', 127]]] do
-        `foo`.should == 'my output'
-        $?.exitstatus.should == 127
+      stub_shell do
+        command "ls /tmp/foobar" do
+          stdout "hey there"
+        end
       end
     end
 
